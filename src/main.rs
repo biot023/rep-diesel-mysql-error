@@ -12,7 +12,7 @@ fn main() {
     env_logger::init();
 
     let conn_str = env::var("CONN_STR")
-        .unwrap_or_else(|_| "mysql://root:supersecret@0.0.0.0:3306/test_db".to_string());
+        .unwrap_or_else(|_| "mysql://root:supersecret@127.0.0.1:3306/test_db".to_string());
 
     log::debug!("Connecting with: {:?}...", &conn_str);
     let manager = ConnectionManager::<MysqlConnection>::new(&conn_str);
