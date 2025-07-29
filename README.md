@@ -33,8 +33,6 @@ docker run -d \
 mysql -h 0.0.0.0 -u root -psupersecret < create-db.sql
 ```
 
-NOTE: This generates the panic.
-
 ## LOCALLY
 
 ### Run the app
@@ -42,6 +40,8 @@ NOTE: This generates the panic.
 ```
 RUST_LOG=debug cargo run
 ```
+
+NOTE: This generates the panic.
 
 ## CONTAINERISED
 
