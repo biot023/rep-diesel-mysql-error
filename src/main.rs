@@ -2,6 +2,7 @@ use log;
 use env_logger;
 use diesel::{prelude::*, MysqlConnection, r2d2::ConnectionManager};
 use std::time::Duration;
+use std::env;
 use rep_diesel_mysql_error::{
     schema::basket_items::dsl,
     models::BasketItem,
@@ -10,10 +11,12 @@ use rep_diesel_mysql_error::{
 fn main() {
     env_logger::init();
 
-    let conn_str = "mysql://root:supersecret@0.0.0.0:3306/test_db";
-    log::debug!("Connecting with: {:?}...", conn_str);
-    let manager = ConnectionManager::<MysqlConnection>::new(conn_str);
-    log::debug!("Connected to DB with connection string {:?}...", conn_str);
+    let conn_str = env::var("CONN_STR")
+        .unwrap_or_else(|_| "mysql://root:supersecret@0.0.0.0:3306/test_db".to_string());
+
+    log::debug!("Connecting with: {:?}...", &conn_str);
+    let manager = ConnectionManager::<MysqlConnection>::new(&conn_str);
+    log::debug!("Connected to DB with connection string {:?}...", &conn_str);
 
     let pool = r2d2::Pool::builder()
         .connection_timeout(Duration::from_secs(20))

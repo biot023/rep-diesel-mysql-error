@@ -20,6 +20,9 @@ RUN apt-get update -y && apt-get install -y \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o install-rust.sh
 RUN bash ./install-rust.sh -y
 
+# `CONN_STR` env var only for Docker image
+ENV CONN_STR="mysql://root:supersecret@mysql-container:3306/test_db"
+
 # Add Rust binaries to PATH
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -31,7 +34,7 @@ ENV APP_DIR="/home/app"
 RUN mkdir -p ${APP_DIR}
 WORKDIR ${APP_DIR}
 
-# Share project files
+# Copy application files
 ADD . ${APP_DIR}
 
 # Verify cargo is available and build the application
