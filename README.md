@@ -1,12 +1,22 @@
-# To replicate #
+# Replication
 
-## Create network for Docker images ##
+## CONFIGURATION
+
+Local machine: Ubuntu 24.04.02
+Local `mysql --version`: "mysql  Ver 8.0.42-0ubuntu0.24.04.2 for Linux on x86_64 ((Ubuntu))"
+
+Docker image: `ubuntu:24.04`
+Docker `mysql --version`: "mysql  Ver 8.0.42-0ubuntu0.24.04.2 for Linux on x86_64 ((Ubuntu))"
+
+## SETUP
+
+### Create network for Docker images
 
 ```
 docker network create rep-diesel-mysql-error-nw
 ```
 
-## Start the MySQL instance ##
+### Start the MySQL instance
 
 ```
 docker run -d \
@@ -17,19 +27,33 @@ docker run -d \
   mysql:8.0
 ```
 
-## Create the test DB and load the test data ##
+### Create the test DB and load the test data
 
 ```
 mysql -h 0.0.0.0 -u root -psupersecret < create-db.sql
 ```
 
-## Build the Docker image ##
+NOTE: This generates the panic.
+
+## LOCALLY
+
+### Run the app
+
+```
+RUST_LOG=debug cargo run
+```
+
+## CONTAINERISED
+
+### Build the Docker image
 ```
 docker build -t rep-diesel-mysql-error .
 ```
 
-## Run the example ##
+### Run the example
 
 ```
 docker run --network rep-diesel-mysql-error-nw rep-diesel-mysql-error
 ```
+
+NOTE: This does not generate the panic.
